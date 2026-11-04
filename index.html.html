@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#172554">
+<title>Misi Penjelajah Perkataan — Gua Rahsia Perkataan</title>
+<style>
+:root{
+  --navy:#172554;--blue:#2563eb;--sky:#dbeafe;--gold:#fbbf24;
+  --cream:#fff7e6;--ink:#1e293b;--muted:#64748b;--green:#15803d;
+  --red:#b91c1c;--purple:#7c3aed;--line:#dbe3ef;--white:#fff;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);
+ background:radial-gradient(circle at 15% 10%,#dbeafe 0,transparent 28%),
+ linear-gradient(135deg,#eff6ff,#fef3c7);min-height:100vh}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0;border-radius:14px;padding:12px 17px;font-weight:700;transition:.15s}
+button:hover{transform:translateY(-1px);filter:brightness(1.04)}
+button:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.primary{background:var(--blue);color:white}.secondary{background:#e2e8f0;color:var(--navy)}
+.gold{background:var(--gold);color:#422006}.success{background:#dcfce7;color:#14532d}
+.danger{background:#fee2e2;color:#991b1b}.purple{background:#ede9fe;color:#4c1d95}
+.outline{background:white;border:1px solid var(--line);color:var(--navy)}
+header{background:linear-gradient(120deg,#172554,#1e40af);color:white;padding:17px 22px;box-shadow:0 4px 16px #17255425}
+.header-inner{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.brand{font-weight:900;letter-spacing:.3px}.brand small{display:block;font-weight:500;color:#bfdbfe;margin-top:4px}
+main{max-width:1100px;margin:24px auto;padding:0 16px 45px}
+.card{background:#ffffffed;border:1px solid #ffffff;border-radius:22px;padding:22px;box-shadow:0 12px 32px #1e293b12;margin-bottom:18px}
+.hero{background:linear-gradient(145deg,#172554,#1d4ed8);color:white;text-align:center;padding:36px 22px;overflow:hidden;position:relative}
+.hero h1{font-size:clamp(27px,5vw,43px);margin:8px 0}.hero p{color:#dbeafe;font-size:18px}
+.hero-icon{font-size:76px;margin:6px}
+h2{margin:0 0 12px;color:var(--navy)}h3{margin:0 0 10px;color:var(--navy)}
+p{line-height:1.55}.muted{color:var(--muted)}.small{font-size:13px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+.door{background:linear-gradient(160deg,#fef3c7,#fde68a);border:2px solid #f59e0b;border-radius:20px;padding:18px;text-align:center;min-height:155px}
+.door .emoji{font-size:42px}.door h3{margin:6px 0}.door.done{background:linear-gradient(160deg,#dcfce7,#bbf7d0);border-color:#22c55e}
+.door.locked{opacity:.55}
+.progress{height:13px;background:#e2e8f0;border-radius:20px;overflow:hidden}.progress>span{display:block;height:100%;background:linear-gradient(90deg,#22c55e,#84cc16);width:0;transition:.3s}
+.topline{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}
+.pill{padding:8px 12px;border-radius:999px;background:#e2e8f0;color:#334155;font-size:13px;font-weight:700}
+.pill.done{background:#dcfce7;color:#166534}.pill.active{background:#dbeafe;color:#1d4ed8}
+.word-picture{font-size:84px;text-align:center;background:linear-gradient(145deg,#eff6ff,#fef3c7);border-radius:18px;padding:16px;margin:12px auto;max-width:260px}
+.syllables{display:flex;justify-content:center;align-items:center;gap:12px;margin:20px 0;flex-wrap:wrap}
+.syllable{font-size:34px;font-weight:900;color:#1d4ed8;background:#dbeafe;border-radius:16px;padding:13px 22px}
+.fullword{font-size:32px;font-weight:900;letter-spacing:2px;color:#7c2d12;text-align:center}
+.question{font-size:20px;font-weight:800;line-height:1.4}
+.choice{display:block;width:100%;text-align:left;margin:9px 0;background:white;border:2px solid var(--line);color:var(--ink);padding:15px}
+.choice.selected{border-color:var(--blue);background:#eff6ff}.choice.correct{border-color:#16a34a;background:#dcfce7}.choice.wrong{border-color:#dc2626;background:#fee2e2}
+.feedback{padding:13px;border-radius:13px;margin-top:12px;font-weight:700;display:none}
+.feedback.show{display:block}.feedback.good{background:#dcfce7;color:#166534}.feedback.bad{background:#fee2e2;color:#991b1b}
+label{display:block;font-weight:700;margin:9px 0 5px}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid #cbd5e1;border-radius:11px;background:white;color:var(--ink)}
+textarea{min-height:76px;resize:vertical}
+.formgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.status{padding:10px 12px;border-radius:12px;background:#f1f5f9;margin:10px 0}
+.teacher-inline{background:#f5f3ff;border:1px solid #ddd6fe;border-radius:17px;padding:16px;margin-top:18px}
+.teacher-inline h3{color:#5b21b6}
+.radio-row{display:flex;gap:12px;flex-wrap:wrap}
+.radio-row label{display:flex;align-items:center;gap:6px;background:white;padding:9px 12px;border:1px solid #ddd6fe;border-radius:11px;margin:0;font-weight:600}
+.radio-row input{width:auto}
+table{width:100%;border-collapse:collapse;min-width:700px}
+th,td{border-bottom:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}
+th{background:#eff6ff;color:var(--navy)}
+.tablewrap{overflow-x:auto}
+.hidden{display:none!important}
+.notice{background:#fffbeb;border:1px solid #fcd34d;color:#78350f;padding:12px;border-radius:12px}
+footer{text-align:center;color:#64748b;font-size:12px;padding:18px}
+@media(max-width:600px){.card{padding:16px}.hero{padding:27px 15px}.word-picture{font-size:68px}.syllable{font-size:28px}}
+@media print{header,.no-print,button{display:none!important}body{background:white}.card{box-shadow:none;border:1px solid #ddd;break-inside:avoid}main{max-width:none;margin:0}}
+</style>
+</head>
+<body>
+<header>
+ <div class="header-inner">
+  <div class="brand">🧭 MISI PENJELAJAH PERKATAAN <small>Misi 3 — Gua Rahsia Perkataan</small></div>
+  <div class="no-print"><button class="outline" onclick="showHome()">Menu Utama</button> <button class="gold" onclick="showTeacher()">Pentaksiran Guru</button></div>
+ </div>
+</header>
+<main>
+<section id="home">
+ <div class="card hero">
+  <div class="hero-icon">🗝️💎</div>
+  <h1>GUA RAHSIA PERKATAAN</h1>
+  <p>Baca perkataan, sebut dengan jelas dan selesaikan teka-teki!</p>
+  <div class="actions" style="justify-content:center">
+   <button class="gold" onclick="showMap()">MULA MISI</button>
+   <button class="outline" onclick="speak('Selamat datang, penjelajah! Mari kita membaca, menyebut dan memahami lima perkataan. Selesaikan tiga bahagian bagi setiap pintu untuk memperoleh kristal.')">DENGAR ARAHAN</button>
+   <button class="outline" onclick="showTeacher()">PENTAKSIRAN GURU</button>
+  </div>
+ </div>
+ <div class="card">
+  <h2>🎯 Objektif Pembelajaran</h2>
+  <ol>
+   <li>Membaca sekurang-kurangnya empat daripada lima perkataan dengan betul.</li>
+   <li>Menyebut sekurang-kurangnya empat daripada lima perkataan dengan jelas.</li>
+   <li>Menjawab sekurang-kurangnya empat daripada lima soalan kefahaman dengan betul.</li>
+  </ol>
+  <p class="muted small">Lima perkataan sasaran: SABUN, KASUT, KATIL, HITAM dan GARAM.</p>
+ </div>
+</section>
+
+<section id="map" class="hidden">
+ <div class="card">
+  <div class="topline"><div><h2>🗺️ Peta Pengembaraan</h2><p class="muted">Pilih pintu rahsia untuk memulakan cabaran.</p></div><div><strong id="mapCount">0 daripada 5 pintu selesai</strong></div></div>
+  <div class="progress"><span id="mapProgress"></span></div>
+  <div id="doorGrid" class="grid" style="margin-top:18px"></div>
+  <div class="actions"><button class="secondary" onclick="showHome()">KEMBALI KE MENU UTAMA</button><button class="gold" onclick="showTeacher()">PENTAKSIRAN GURU</button></div>
+ </div>
+</section>
+
+<section id="lesson" class="hidden">
+ <div class="card">
+  <div class="topline"><div><p class="muted small" id="doorNumber">PINTU 1</p><h2 id="lessonTitle">SABUN</h2></div><button class="secondary no-print" onclick="showMap()">KEMBALI KE PETA</button></div>
+  <div class="pills" id="partPills"></div>
+  <div id="lessonContent"></div>
+ </div>
+</section>
+
+<section id="treasure" class="hidden">
+ <div class="card hero">
+  <div class="hero-icon">🏆💰</div><h1>TAHNIAH, PENJELAJAH!</h1>
+  <p>Kamu berjaya membuka peti harta karun!</p>
+  <h2 style="color:#fde68a" id="treasureStars">5 daripada 5 kristal</h2>
+ </div>
+ <div class="card"><h2>Rekod Perjalanan Kamu</h2><div id="treasureSummary"></div>
+  <div class="actions"><button class="primary" onclick="showMap()">LIHAT PETA</button><button class="secondary" onclick="showTeacher()">PENTAKSIRAN GURU</button></div>
+ </div>
+</section>
+
+<section id="teacher" class="hidden">
+ <div class="card">
+  <div class="topline"><div><h2>📋 Pentaksiran Guru</h2><p class="muted">Rekod penguasaan murid bagi kemahiran membaca, lisan dan kefahaman.</p></div><button class="secondary no-print" onclick="showMap()">KEMBALI KE PETA</button></div>
+  <div class="formgrid">
+   <div><label for="studentName">Nama murid</label><input id="studentName" placeholder="Masukkan nama murid"></div>
+   <div><label for="studentClass">Kelas</label><input id="studentClass" placeholder="Masukkan kelas"></div>
+   <div><label for="assessmentDate">Tarikh</label><input id="assessmentDate" type="date"></div>
+   <div><label for="teacherName">Nama guru</label><input id="teacherName" placeholder="Masukkan nama guru"></div>
+  </div>
+  <h3 style="margin-top:22px">Senarai Semak Penguasaan</h3>
+  <div class="tablewrap"><table id="assessmentTable"><thead><tr><th>Perkataan</th><th>Membaca</th><th>Lisan</th><th>Kefahaman</th><th>Rakaman suara</th></tr></thead><tbody></tbody></table></div>
+  <div class="notice small" style="margin-top:12px">Panduan: Menguasai — dilakukan secara kendiri. Dengan bimbingan — dilakukan dengan bantuan atau petunjuk. Belum menguasai — masih belum dapat dilakukan walaupun telah dibimbing. Guru menentukan tahap berdasarkan evidens sebenar.</div>
+  <h3 style="margin-top:22px">Catatan Guru</h3>
+  <div class="formgrid">
+   <div><label for="notesReading">Kesalahan membaca</label><textarea id="notesReading"></textarea></div>
+   <div><label for="notesSpeaking">Kesalahan sebutan</label><textarea id="notesSpeaking"></textarea></div>
+   <div><label for="notesMeaning">Kesukaran memahami maksud</label><textarea id="notesMeaning"></textarea></div>
+   <div><label for="notesHelp">Bantuan yang diperlukan</label><textarea id="notesHelp"></textarea></div>
+   <div><label for="notesStrength">Kekuatan murid</label><textarea id="notesStrength"></textarea></div>
+   <div><label for="notesNext">Cadangan tindakan susulan</label><textarea id="notesNext"></textarea></div>
+  </div>
+  <h3 style="margin-top:22px">Rumusan Pentaksiran</h3>
+  <div class="formgrid">
+   <div><label for="countRead">Bilangan perkataan dibaca dengan betul (/5)</label><input id="countRead" type="number" min="0" max="5"></div>
+   <div><label for="countSpeak">Bilangan perkataan disebut dengan jelas (/5)</label><input id="countSpeak" type="number" min="0" max="5"></div>
+   <div><label for="countUnderstand">Bilangan soalan kefahaman betul (/5)</label><input id="countUnderstand" type="number" min="0" max="5"></div>
+  </div>
+  <label for="overall">Rumusan tahap penguasaan</label><textarea id="overall"></textarea>
+  <div class="actions no-print">
+   <button class="primary" onclick="saveTeacher()">SIMPAN CATATAN</button>
+   <button class="outline" onclick="window.print()">CETAK PENTAKSIRAN</button>
+   <button class="secondary" onclick="showHome()">KEMBALI KE MENU UTAMA</button>
+  </div>
+  <p class="small muted">Nota: Rekod dan rakaman disimpan sementara dalam sesi pelayar ini sahaja. Muat semula atau tutup halaman boleh menyebabkan rakaman dan rekod sesi hilang. Cetak rekod untuk menyimpan salinan.</p>
+ </div>
+</section>
+</main>
+<footer>BBM Digital Pemulihan Bahasa Melayu • Misi 3 — Gua Rahsia Perkataan</footer>
+
+<script>
+const words = [
+ {word:"SABUN",syllables:["sa","bun"],emoji:"🧼",question:"Mengapakah kita menggunakan sabun ketika mencuci tangan?",choices:["Untuk membersihkan tangan","Untuk mewarnakan tangan","Untuk mengeringkan tangan"],answer:0},
+ {word:"KASUT",syllables:["ka","sut"],emoji:"👟",question:"Mengapakah kita memakai kasut ketika berjalan di luar rumah?",choices:["Untuk melindungi kepala","Untuk melindungi kaki","Untuk melindungi tangan"],answer:1},
+ {word:"KATIL",syllables:["ka","til"],emoji:"🛏️",question:"Apakah yang biasanya kita lakukan di atas katil pada waktu malam?",choices:["Memasak","Bermain bola","Tidur"],answer:2},
+ {word:"HITAM",syllables:["hi","tam"],emoji:"⚫",question:"Ali mempunyai kasut berwarna hitam. Apakah warna kasut Ali?",choices:["Hitam","Putih","Merah"],answer:0},
+ {word:"GARAM",syllables:["ga","ram"],emoji:"🧂",question:"Apakah bahan yang digunakan untuk memberikan rasa masin pada makanan?",choices:["Gula","Garam","Tepung"],answer:1}
+];
+const state = {
+ current:0,part:0,
+ data:words.map(()=>({readDone:false,speakDone:false,underDone:false,readLevel:"",speakLevel:"",underLevel:"",recording:null,quizCorrect:false,quizChoice:null})),
+ teacher:{}
+};
+let mediaRecorder=null,stream=null,chunks=[],recordTimer=null,recordSeconds=0;
+const $=id=>document.getElementById(id);
+function hideAll(){["home","map","lesson","treasure","teacher"].forEach(id=>$(id).classList.add("hidden"))}
+function showHome(){stopRecordingIfNeeded();hideAll();$("home").classList.remove("hidden")}
+function showMap(){stopRecordingIfNeeded();hideAll();$("map").classList.remove("hidden");renderMap()}
+function showTeacher(){stopRecordingIfNeeded();hideAll();$("teacher").classList.remove("hidden");renderTeacher()}
+function speak(text){
+ if(!("speechSynthesis" in window)){alert("Fungsi audio arahan tidak disokong oleh pelayar ini.");return}
+ speechSynthesis.cancel();
+ const utter=new SpeechSynthesisUtterance(text);utter.lang="ms-MY";utter.rate=.82;utter.pitch=1;
+ const voices=speechSynthesis.getVoices();const msVoice=voices.find(v=>v.lang.toLowerCase().startsWith("ms"));
+ if(msVoice)utter.voice=msVoice;speechSynthesis.speak(utter);
+}
+function stopRecordingIfNeeded(){if(mediaRecorder&&mediaRecorder.state==="recording"){mediaRecorder.stop()}if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}if(window.speechSynthesis)speechSynthesis.cancel()}
+function completedCount(){return state.data.filter(d=>d.readDone&&d.speakDone&&d.underDone).length}
+function renderMap(){
+ const done=completedCount();$("mapCount").textContent=done+" daripada 5 pintu selesai";$("mapProgress").style.width=(done/5*100)+"%";
+ $("doorGrid").innerHTML="";
+ words.forEach((w,i)=>{
+  const d=state.data[i],complete=d.readDone&&d.speakDone&&d.underDone;
+  const el=document.createElement("div");el.className="door"+(complete?" done":"");
+  el.innerHTML=`<div class="emoji">${complete?"💎":"🚪"}</div><h3>PINTU ${i+1}: ${w.word}</h3><p class="small">${complete?"Pintu selesai":"Tiga cabaran menanti"}</p><button class="${complete?"success":"gold"}" onclick="openWord(${i})">${complete?"ULANG AKTIVITI":"BUKA PINTU"}</button>`;
+  $("doorGrid").appendChild(el);
+ });
+ if(done===5){const b=document.createElement("div");b.className="card";b.innerHTML='<h3>Semua pintu telah diselesaikan!</h3><button class="primary" onclick="showTreasure()">BUKA PETI HARTA KARUN</button>'; $("doorGrid").appendChild(b)}
+}
+function openWord(i){state.current=i;state.part=0;renderLesson()}
+function renderLesson(){
+ hideAll();$("lesson").classList.remove("hidden");const w=words[state.current],d=state.data[state.current];
+ $("doorNumber").textContent="PINTU "+(state.current+1);$("lessonTitle").textContent=w.word;
+ $("partPills").innerHTML=["MEMBACA","LISAN","KEFAHAMAN"].map((p,i)=>`<button class="pill ${state.part===i?"active":""} ${[d.readDone,d.speakDone,d.underDone][i]?"done":""}" onclick="goPart(${i})">${i+1}. ${p} ${[d.readDone,d.speakDone,d.underDone][i]?"✓":""}</button>`).join("");
+ if(state.part===0)renderReading(w,d);if(state.part===1)renderSpeaking(w,d);if(state.part===2)renderUnderstanding(w,d);
+}
+function goPart(p){state.part=p;renderLesson()}
+function renderReading(w,d){
+ $("lessonContent").innerHTML=`
+ <h3>BAHAGIAN 1 — MEMBACA</h3><p>Baca kedua-dua suku kata. Kemudian, gabungkan untuk membentuk perkataan.</p>
+ <div class="word-picture">${w.emoji}</div>
+ <div class="syllables"><span class="syllable">${w.syllables[0]}</span><span style="font-size:27px">+</span><span class="syllable">${w.syllables[1]}</span></div>
+ <div class="fullword">${w.word}</div>
+ <div class="actions" style="justify-content:center">
+  <button class="outline" onclick="speak('${w.syllables[0]}')">DENGAR SUKU KATA PERTAMA</button>
+  <button class="outline" onclick="speak('${w.syllables[1]}')">DENGAR SUKU KATA KEDUA</button>
+  <button class="primary" onclick="speak('${w.word}')">DENGAR PERKATAAN</button>
+ </div>
+ <hr style="border:0;border-top:1px solid var(--line);margin:22px 0">
+ <h3>Cabaran Membaca</h3><p class="question">${w.syllables[0]} + ${w.syllables[1]} = ?</p>
+ <div id="readChoices">${[w.word,...words.filter(x=>x.word!==w.word).slice(0,2).map(x=>x.word)].sort((a,b)=>a.localeCompare(b)).map(x=>`<button class="choice" onclick="checkReading('${x}')">${x}</button>`).join("")}</div>
+ <div id="readFeedback" class="feedback"></div>
+ <div class="teacher-inline"><h3>Pentaksiran Membaca Guru</h3><p class="small">Dengar murid membaca perkataan dan rekod tahap penguasaannya berdasarkan pemerhatian.</p>
+ <div class="radio-row">${levelRadios("readLevel",d.readLevel)}</div>
+ <label>Catatan guru</label><textarea id="readNote" placeholder="Catat kesalahan atau bantuan yang diperlukan...">${state.teacher["readNote"+state.current]||""}</textarea>
+ <button class="purple" onclick="saveInlineLevel('readLevel','readDone','readNote')">SIMPAN PENTAKSIRAN MEMBACA</button></div>
+ <div class="actions"><button class="secondary" onclick="showMap()">KEMBALI KE PETA</button><button class="primary" onclick="goPart(1)">TERUSKAN KE BAHAGIAN LISAN</button></div>`;
+}
+function checkReading(choice){
+ const w=words[state.current],fb=$("readFeedback"),correct=choice===w.word;
+ fb.className="feedback show "+(correct?"good":"bad");fb.textContent=correct?"Syabas! Kamu berjaya mengecam perkataan ini.":"Belum tepat. Cuba baca suku kata sekali lagi.";
+ if(correct){document.querySelectorAll("#readChoices .choice").forEach(b=>{b.disabled=true;if(b.textContent===w.word)b.classList.add("correct")});}
+ else{const btn=[...document.querySelectorAll("#readChoices .choice")].find(b=>b.textContent===choice);if(btn)btn.classList.add("wrong")}
+}
+function levelRadios(name,value){
+ return ["Menguasai","Dengan bimbingan","Belum menguasai"].map(v=>`<label><input type="radio" name="${name}" value="${v}" ${value===v?"checked":""}>${v}</label>`).join("");
+}
+function saveInlineLevel(radioName,doneKey,noteId){
+ const selected=document.querySelector(`input[name="${radioName}"]:checked`);
+ if(!selected){alert("Sila pilih tahap penguasaan terlebih dahulu.");return}
+ const d=state.data[state.current];d[radioName]=selected.value;d[doneKey]=true;
+ if(noteId)state.teacher[noteId+state.current]=$(noteId).value;
+ renderLesson();
+}
+function renderSpeaking(w,d){
+ const has=!!d.recording;
+ $("lessonContent").innerHTML=`
+ <h3>BAHAGIAN 2 — LISAN</h3><p>Dengar sebutan contoh. Kemudian, sebut perkataan dengan jelas dan rakam suara kamu.</p>
+ <div class="word-picture">${w.emoji}</div><div class="fullword">${w.word}</div>
+ <div class="actions" style="justify-content:center">
+  <button class="outline" onclick="speak('${w.word}')">DENGAR CONTOH</button>
+  <button class="primary" id="startRec" onclick="startRecording()">MULA RAKAM</button>
+  <button class="danger" id="stopRec" onclick="stopRecording()" disabled>HENTI RAKAMAN</button>
+ </div>
+ <div id="recordStatus" class="status" role="status">${has?"Rakaman tersedia.":"Belum ada rakaman."}</div>
+ <div class="actions">
+  <button class="success" id="playRec" onclick="playRecording()" ${has?"":"disabled"}>DENGAR RAKAMAN</button>
+  <button class="outline" onclick="startRecording()">RAKAM SEMULA</button>
+  <button class="danger" onclick="deleteRecording()">PADAM RAKAMAN</button>
+ </div>
+ <p class="small muted">Tempoh rakaman maksimum ialah 10 saat. Benarkan akses mikrofon apabila pelayar memintanya. Rakaman hanya disimpan sementara dalam sesi ini.</p>
+ <div class="teacher-inline">
+  <h3>Pentaksiran Lisan Guru — ${w.word}</h3>
+  <p class="small">Selepas mendengar rakaman murid, guru memilih tahap penguasaan berdasarkan ketepatan sebutan, kejelasan suara dan keupayaan menyebut secara kendiri.</p>
+  <button class="outline" onclick="playRecording()" ${has?"":"disabled"}>DENGAR RAKAMAN MURID</button>
+  <label>Tahap penguasaan</label><div class="radio-row">${levelRadios("speakLevel",d.speakLevel)}</div>
+  <label>Catatan guru</label><textarea id="speakNote" placeholder="Contoh: Murid menyebut dengan jelas selepas diberikan contoh...">${state.teacher["speakNote"+state.current]||""}</textarea>
+  <button class="purple" onclick="saveInlineLevel('speakLevel','speakDone','speakNote')">SIMPAN PENTAKSIRAN LISAN</button>
+  <p class="small muted">Pentaksiran dibuat oleh guru. Aplikasi tidak menilai sebutan secara automatik.</p>
+ </div>
+ <div class="actions"><button class="secondary" onclick="goPart(0)">KEMBALI KE MEMBACA</button><button class="primary" onclick="goPart(2)">TERUSKAN KE KEFAHAMAN</button></div>`;
+}
+async function startRecording(){
+ const d=state.data[state.current];
+ if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||!window.MediaRecorder){$("recordStatus").textContent="Pelayar ini tidak menyokong rakaman suara. Cuba gunakan pelayar terkini melalui sambungan selamat.";return}
+ try{
+  if(mediaRecorder&&mediaRecorder.state==="recording")mediaRecorder.stop();
+  if(stream)stream.getTracks().forEach(t=>t.stop());
+  stream=await navigator.mediaDevices.getUserMedia({audio:true});
+  chunks=[];mediaRecorder=new MediaRecorder(stream);
+  mediaRecorder.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
+  mediaRecorder.onstop=()=>{
+   const blob=new Blob(chunks,{type:mediaRecorder.mimeType||"audio/webm"});
+   if(d.recording&&d.recording.url)URL.revokeObjectURL(d.recording.url);
+   d.recording={blob,url:URL.createObjectURL(blob)};
+   if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}
+   $("recordStatus").textContent="Rakaman selesai. Tekan DENGAR RAKAMAN untuk mendengar suara kamu.";
+   $("playRec").disabled=false;$("stopRec").disabled=true;$("startRec").disabled=false;
+  };
+  mediaRecorder.start();recordSeconds=0;
+  $("recordStatus").textContent="Sedang merakam suara… (maksimum 10 saat)";
+  $("startRec").disabled=true;$("stopRec").disabled=false;$("playRec").disabled=true;
+  recordTimer=setTimeout(()=>stopRecording(),10000);
+ }catch(err){
+  $("recordStatus").textContent=err.name==="NotAllowedError"?"Mikrofon belum dibenarkan. Sila benarkan akses mikrofon.":"Rakaman tidak berjaya. Sila semak mikrofon dan cuba lagi.";
+ }
+}
+function stopRecording(){
+ clearTimeout(recordTimer);
+ if(mediaRecorder&&mediaRecorder.state==="recording")mediaRecorder.stop();
+}
+function playRecording(){
+ const rec=state.data[state.current].recording;if(!rec){alert("Belum ada rakaman untuk perkataan ini.");return}
+ const audio=new Audio(rec.url);audio.play().catch(()=>alert("Rakaman tidak dapat dimainkan. Sila cuba lagi."));
+}
+function deleteRecording(){
+ const d=state.data[state.current];if(d.recording&&d.recording.url)URL.revokeObjectURL(d.recording.url);d.recording=null;
+ renderLesson();
+}
+function renderUnderstanding(w,d){
+ const choices=w.choices.map((c,i)=>`<button class="choice" onclick="answerQuiz(${i})">${String.fromCharCode(65+i)}. ${c}</button>`).join("");
+ $("lessonContent").innerHTML=`
+ <h3>BAHAGIAN 3 — KEFAHAMAN</h3><p>Lihat gambar dan dengar soalan. Pilih jawapan yang paling tepat.</p>
+ <div class="word-picture">${w.emoji}</div>
+ <p class="question">${w.question}</p>
+ <button class="outline" onclick="speak('${w.question}')">DENGAR SOALAN</button>
+ <div id="quizChoices">${choices}</div>
+ <div id="quizFeedback" class="feedback"></div>
+ <div class="teacher-inline"><h3>Pentaksiran Kefahaman Guru</h3><p class="small">Guru boleh merekod tahap kefahaman berdasarkan jawapan murid dan bimbingan yang diperlukan.</p>
+ <div class="radio-row">${levelRadios("underLevel",d.underLevel)}</div>
+ <label>Catatan guru</label><textarea id="underNote" placeholder="Catatan guru...">${state.teacher["underNote"+state.current]||""}</textarea>
+ <button class="purple" onclick="saveInlineLevel('underLevel','underDone','underNote')">SIMPAN PENTAKSIRAN KEFAHAMAN</button></div>
+ <div class="actions"><button class="secondary" onclick="goPart(1)">KEMBALI KE LISAN</button><button class="primary" onclick="finishWord()" ${d.underDone?"":"disabled"}>SELESAI DAN TERUSKAN</button></div>
+ <p class="small muted">Jawapan betul: satu daripada tiga pilihan. Guru menentukan tahap penguasaan berdasarkan evidens sebenar.</p>`;
+ if(d.quizChoice!==null)showQuizFeedback(d.quizChoice);
+}
+function answerQuiz(index){
+ const d=state.data[state.current];d.quizChoice=index;d.quizCorrect=index===words[state.current].answer;
+ showQuizFeedback(index);
+}
+function showQuizFeedback(index){
+ const w=words[state.current],fb=$("quizFeedback"),correct=index===w.answer;
+ fb.className="feedback show "+(correct?"good":"bad");
+ fb.textContent=correct?"Syabas! Kamu berjaya memahami perkataan ini.":"Belum tepat. Lihat gambar dan fikirkan maksud perkataan.";
+ document.querySelectorAll("#quizChoices .choice").forEach((b,i)=>{b.classList.remove("correct","wrong");if(i===w.answer&&correct)b.classList.add("correct");if(i===index&&!correct)b.classList.add("wrong")});
+ if(correct){state.data[state.current].underDone=true;const next=$("lessonContent").querySelector("button[onclick='finishWord()']");if(next)next.disabled=false}
+}
+function finishWord(){
+ const d=state.data[state.current];
+ if(!d.readDone||!d.speakDone||!d.underDone){alert("Lengkapkan aktiviti membaca, lisan dan kefahaman serta pentaksiran guru terlebih dahulu.");return}
+ showMap();
+ if(completedCount()===5)showTreasure();
+}
+function showTreasure(){
+ hideAll();$("treasure").classList.remove("hidden");$("treasureStars").textContent=completedCount()+" daripada 5 kristal diperoleh";
+ $("treasureSummary").innerHTML=words.map((w,i)=>{const d=state.data[i];return `<p><strong>${w.word}</strong> — Membaca: ${d.readDone?"Selesai":"Belum selesai"} | Lisan: ${d.speakDone?"Selesai":"Belum selesai"} | Kefahaman: ${d.underDone?"Selesai":"Belum selesai"}</p>`}).join("");
+}
+function renderTeacher(){
+ const body=$("assessmentTable").querySelector("tbody");body.innerHTML="";
+ words.forEach((w,i)=>{
+  const d=state.data[i],tr=document.createElement("tr");
+  tr.innerHTML=`<td><strong>${w.word}</strong></td>
+   <td>${d.readLevel||"Belum dinilai"}</td><td>${d.speakLevel||"Belum dinilai"}</td><td>${d.underLevel||"Belum dinilai"}</td>
+   <td>${d.recording?`<button class="success" onclick="playTeacherRecording(${i})">DENGAR RAKAMAN</button>`:"Belum dirakam"}</td>`;
+  body.appendChild(tr);
+ });
+ const t=state.teacher;
+ ["studentName","studentClass","assessmentDate","teacherName","notesReading","notesSpeaking","notesMeaning","notesHelp","notesStrength","notesNext","countRead","countSpeak","countUnderstand","overall"].forEach(id=>{if(t[id]!==undefined)$(id).value=t[id]});
+}
+function playTeacherRecording(i){
+ const rec=state.data[i].recording;if(!rec){alert("Belum ada rakaman bagi perkataan ini.");return}
+ new Audio(rec.url).play().catch(()=>alert("Rakaman tidak dapat dimainkan."));
+}
+function saveTeacher(){
+ ["studentName","studentClass","assessmentDate","teacherName","notesReading","notesSpeaking","notesMeaning","notesHelp","notesStrength","notesNext","countRead","countSpeak","countUnderstand","overall"].forEach(id=>state.teacher[id]=$(id).value);
+ alert("Catatan pentaksiran disimpan dalam sesi semasa.");
+}
+$("assessmentDate").value=new Date().toISOString().slice(0,10);
+renderMap();
+</script>
+</body>
+</html>
